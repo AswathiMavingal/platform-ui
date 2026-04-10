@@ -4,3 +4,15 @@
 [submodule "projects/projects/products"]
 	path = projects/projects/products
 	url = https://github.com/AswathiMavingal/platform-ui-products.git
+[submodule "projects/projects/product"]
+	path = projects/projects/product
+	url = https://github.com/AswathiMavingal/platform-ui-products.git
+[submodule "projects/platform-ui-products"]
+	path = projects/platform-ui-products
+	url = https://github.com/AswathiMavingal/platform-ui-products.git
+[submodule "projects/products"]
+	path = projects/products
+	url = https://github.com/AswathiMavingal/platform-ui-products.git
+[submodule "projects/orders"]
+	path = projects/orders
+	url = https://github.com/AswathiMavingal/platform-ui-order.git
