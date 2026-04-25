@@ -1,0 +1,24 @@
+name: PR Title Check
+
+on:
+  pull_request:
+    types: [opened, edited, synchronize, reopened]
+
+jobs:
+  validate-title:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check PR title format
+        run: |
+          echo "PR Title: ${{ github.event.pull_request.title }}"
+
+          TITLE="${{ github.event.pull_request.title }}"
+
+          if [[ ! $TITLE =~ ^(MFE)-[0-9]+:\ .+ ]]; then
+            echo "❌ Invalid PR title format"
+            echo "Expected: MFE-123: description"
+            exit 1
+          fi
+
+          echo "✅ PR title format is valid"
