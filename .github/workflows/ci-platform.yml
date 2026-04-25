@@ -31,16 +31,17 @@ jobs:
       # 5. Build (Host)
       - name: Build the project
         # run: npx ng build shell --configuration production
-        run: cd projects/shell && npx ng build --configuration production
+        # run: cd projects/shell && npx ng build --configuration production
+        run: npm run build:shell
 
       # 6. Build Products MFE
       - name: Build Products 
         # run: npx ng build products --configuration production 
-        run: cd projects/products && npx ng build --configuration production
+        run: npm run build:products
       # 7. Build Orders MFE
       - name: Build Orders 
         # run: npx ng build orders --configuration production
-        run: cd projects/orders && npx ng build --configuration production
+        run: npm run build:orders
 
       # 8. Verify dist output (debug safety)
       - name: List dist contents
