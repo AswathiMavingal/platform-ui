@@ -16,6 +16,7 @@
     "start:all": "concurrently \"npm run start:shell\" \"npm run start:products\" \"npm run start:orders\" "
   },
   "workspaces": [
+    "projects/*",
     "projects/shell",
     "projects/products",
     "projects/orders",
