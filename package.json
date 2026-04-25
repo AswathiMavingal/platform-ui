@@ -9,7 +9,7 @@
     "start:products": "npm --workspace=projects/products start",
     "start:orders": "npm --workspace=projects/orders start",
     "start:cart": "npm --workspace=projects/cart start",
-    "build:shell": "ng build shell --workspace=projects/shell",
+    "build:shell": "ng build shell",
     "build:products": "npm run build --workspace=projects/products",
     "build:orders": "npm run build --workspace=projects/orders",
     "build:cart": "npm run build --workspace=projects/cart",
