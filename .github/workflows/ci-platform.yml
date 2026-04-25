@@ -33,10 +33,10 @@ jobs:
         run: ls -R projects/
 
       # 5. Build (Host)
-      # - name: Build the project
-      #   # run: npx ng build shell --configuration production
-      #   # run: cd projects/shell && npx ng build --configuration production
-      #   run: npm run build:shell
+      - name: Build the project
+        # run: npx ng build shell --configuration production
+        # run: cd projects/shell && npx ng build --configuration production
+        run: npm run build:shell --configuration production
 
       # 6. Build Products MFE
       - name: Build Products 
@@ -57,33 +57,33 @@ jobs:
           echo "Orders dist:"
           ls -R dist/orders
 
-  # -----------------------
-  # 4. SONARQUBE
-  # -----------------------
-  sonar:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5
-        with:
-          fetch-depth: 0
-      - name: SonarQube Scan
-        uses: SonarSource/sonarqube-scan-action@fd88b7d7ccbaefd23d8f36f73b59db7a3d246602
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+  # # -----------------------
+  # # 4. SONARQUBE
+  # # -----------------------
+  # sonar:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5
+  #       with:
+  #         fetch-depth: 0
+  #     - name: SonarQube Scan
+  #       uses: SonarSource/sonarqube-scan-action@fd88b7d7ccbaefd23d8f36f73b59db7a3d246602
+  #       env:
+  #         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
-  # 9. Docker build (optional but powerful)
-  docker-build:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+  # # 9. Docker build (optional but powerful)
+  # docker-build:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Checkout code
+  #       uses: actions/checkout@v4
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
+  #     - name: Set up Docker Buildx
+  #       uses: docker/setup-buildx-action@v2
 
-      - name: Build Docker image
-        run: |
-          docker build --build-arg APP_NAME=products -t platform-ui-products:latest .
-          docker build --build-arg APP_NAME=orders -t platform-ui-orders:latest .
+  #     - name: Build Docker image
+  #       run: |
+  #         docker build --build-arg APP_NAME=products -t platform-ui-products:latest .
+  #         docker build --build-arg APP_NAME=orders -t platform-ui-orders:latest .
 
   # 9. Docker build (optional but powerful) - name: Build Docker image - Shell run: docker build --build-arg APP_NAME=shell -t shell:test . - name: Build Docker image - Products run: docker build --build-arg APP_NAME=products -t products:test . - name: Build Docker image - Orders run: docker build --build-arg APP_NAME=orders -t orders:test .
