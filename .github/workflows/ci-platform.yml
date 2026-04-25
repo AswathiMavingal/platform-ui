@@ -86,11 +86,17 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
-      - name: Build Docker image
-        run: |
-          docker build --build-arg APP_NAME=shell --network=host --no-cache -t platform-ui-shell:latest .
-          docker build --build-arg APP_NAME=products --network=host --no-cache -t platform-ui-products:latest .
-          docker build --build-arg APP_NAME=orders --network=host --no-cache -t platform-ui-orders:latest .
+      # - name: Build Docker image
+      #   run: |
+      #     docker build --build-arg APP_NAME=shell --network=host --no-cache -t platform-ui-shell:latest .
+      #     docker build --build-arg APP_NAME=products --network=host --no-cache -t platform-ui-products:latest .
+      #     docker build --build-arg APP_NAME=orders --network=host --no-cache -t platform-ui-orders:latest .
 
+
+      - name: Build Shell Image
+        run: docker build --build-arg APP_NAME=shell -t shell:ci .
+
+      - name: Build Products Image
+        run: docker build --build-arg APP_NAME=products -t products:ci .
 
   # 9. Docker build (optional but powerful) - name: Build Docker image - Shell run: docker build --build-arg APP_NAME=shell --network=host --no-cache -t shell:test . - name: Build Docker image - Products run: docker build --build-arg APP_NAME=products --network=host --no-cache -t products:test . - name: Build Docker image - Orders run: docker build --build-arg APP_NAME=orders --network=host --no-cache -t orders:test .
