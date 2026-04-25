@@ -40,7 +40,7 @@ jobs:
         run: |
           cd projects/shell
           npm install
-          npm run build:shell
+          npm run build
 
       # 6. Build Products MFE
       - name: Build Products 
