@@ -14,7 +14,8 @@ COPY . .
 # RUN npm run build:products -- -- --configuration production
 # RUN npm run build:products -- -- --configuration production --base-href / --deploy-url / # working
 ARG APP_NAME=products
-RUN npm run build:$APP_NAME -- -- --configuration production --base-href / --deploy-url /
+# RUN npm run build:$APP_NAME -- -- --configuration production --base-href / --deploy-url /
+RUN npx ng build $APP_NAME --configuration production --base-href / --deploy-url /
 
 # -------- Stage 2: Serve --------
 FROM nginx:1.25
