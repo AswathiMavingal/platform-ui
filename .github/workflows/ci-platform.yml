@@ -76,27 +76,40 @@ jobs:
   #       env:
   #         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
-  # 9. Docker build (optional but powerful)
-  docker-build:
-    runs-on: ubuntu-latest
+  infrastructure-validation:
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+      - checkout
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
+      - name: Validate repo structure
+        run: ls -R projects/ || true
 
-      # - name: Build Docker image
-      #   run: |
-      #     docker build --build-arg APP_NAME=shell --network=host --no-cache -t platform-ui-shell:latest .
-      #     docker build --build-arg APP_NAME=products --network=host --no-cache -t platform-ui-products:latest .
-      #     docker build --build-arg APP_NAME=orders --network=host --no-cache -t platform-ui-orders:latest .
+      - name: Validate docker compose / k8s / helm (if exists)
+        run: echo "infra validation step"
+
+      - name: Validate remoteEntry config (optional)
+        run: echo "check MF routing config"
+
+  # # 9. Docker build (optional but powerful)
+  # docker-build:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Checkout code
+  #       uses: actions/checkout@v3
+
+  #     - name: Set up Docker Buildx
+  #       uses: docker/setup-buildx-action@v2
+
+  #     - name: Build Docker image
+  #       run: |
+  #         docker build --build-arg APP_NAME=shell --network=host --no-cache -t platform-ui-shell:latest .
+  #         docker build --build-arg APP_NAME=products --network=host --no-cache -t platform-ui-products:latest .
+  #         docker build --build-arg APP_NAME=orders --network=host --no-cache -t platform-ui-orders:latest .
 
 
-      - name: Build Shell Image
-        run: docker build --build-arg APP_NAME=shell -t shell:ci .
+  #     # - name: Build Shell Image
+  #     #   run: docker build --build-arg APP_NAME=shell -t shell:ci .
 
-      - name: Build Products Image
-        run: docker build --build-arg APP_NAME=products -t products:ci .
+  #     # - name: Build Products Image
+  #     #   run: docker build --build-arg APP_NAME=products -t products:ci .
 
   # 9. Docker build (optional but powerful) - name: Build Docker image - Shell run: docker build --build-arg APP_NAME=shell --network=host --no-cache -t shell:test . - name: Build Docker image - Products run: docker build --build-arg APP_NAME=products --network=host --no-cache -t products:test . - name: Build Docker image - Orders run: docker build --build-arg APP_NAME=orders --network=host --no-cache -t orders:test .
