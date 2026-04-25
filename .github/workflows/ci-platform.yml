@@ -79,7 +79,8 @@ jobs:
   infrastructure-validation:
     runs-on: ubuntu-latest
     steps:
-      - checkout
+      - name: Checkout code
+        uses: actions/checkout@v3
 
       - name: Validate repo structure
         run: ls -R projects/ || true
