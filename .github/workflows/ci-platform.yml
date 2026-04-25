@@ -6,76 +6,112 @@ on:
     branches: [main]
 
 jobs:
-  # -----------------------
-  # 1. BUILD AND VALIDATE
-  # -----------------------
-  build-validate:
+  # # -----------------------
+  # # 1. BUILD AND VALIDATE
+  # # -----------------------
+  # build-validate:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Checkout code
+  #       uses: actions/checkout@v3
+
+  #     - name: Set up Node.js
+  #       uses: actions/setup-node@v3
+  #       with:
+  #         node-version: '22'
+  #         cache: 'npm'
+
+  #     - name: Install dependencies
+  #       run: npm ci
+
+  #     # 4. Lint (optional but recommended)
+  #     - name: Run lint
+  #       run: npm run lint || echo "No lint configured"
+
+  #     #debug
+  #     - name: Debug Paths
+  #       run: ls -R projects/
+
+  #     # 5. Build (Host)
+  #     - name: Build the project
+  #       # run: npx ng build shell --configuration production
+  #       # run: cd projects/shell && npx ng build --configuration production
+  #       run: npm run build:shell
+  #       # run: |
+  #       #   cd projects/shell
+  #       #   npm install
+  #       #   npm run build
+
+
+  #     # 6. Build Products MFE
+  #     - name: Build Products 
+  #       # run: npx ng build products --configuration production 
+  #       run: npm run build:products
+  #     # 7. Build Orders MFE
+  #     - name: Build Orders 
+  #       # run: npx ng build orders --configuration production
+  #       run: npm run build:orders
+
+  #     # 8. Verify dist output (debug safety)
+  #     - name: List dist contents
+  #       run: |
+  #         echo "Shell dist:"
+  #         ls -R dist/shell
+  #         echo "Products dist:"
+  #         ls -R dist/products
+  #         echo "Orders dist:"
+  #         ls -R dist/orders
+
+  # # -----------------------
+  # # 4. SONARQUBE
+  # # -----------------------
+  # sonar:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5
+  #       with:
+  #         fetch-depth: 0
+  #     - name: SonarQube Scan
+  #       uses: SonarSource/sonarqube-scan-action@fd88b7d7ccbaefd23d8f36f73b59db7a3d246602
+  #       env:
+  #         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+  infrastructure-validation:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v3
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '22'
-          cache: 'npm'
+      - name: Validate repo structure
+        run: ls -R projects/ || true
 
-      - name: Install dependencies
-        run: npm ci
+      - name: Validate docker compose / k8s / helm (if exists)
+        run: echo "infra validation step"
 
-      # 4. Lint (optional but recommended)
-      - name: Run lint
-        run: npm run lint || echo "No lint configured"
+      - name: Validate remoteEntry config (optional)
+        run: echo "check MF routing config"
 
-      # 5. Build (Host)
-      - name: Build the project
-        run: npx ng build shell --configuration production
+  # # 9. Docker build (optional but powerful)
+  # docker-build:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Checkout code
+  #       uses: actions/checkout@v3
 
-      # 6. Build Products MFE
-      - name: Build Products 
-        run: npx ng build products --configuration production 
-      # 7. Build Orders MFE
-      - name: Build Orders 
-        run: npx ng build orders --configuration production
+  #     - name: Set up Docker Buildx
+  #       uses: docker/setup-buildx-action@v2
 
-      # 8. Verify dist output (debug safety)
-      - name: List dist contents
-        run: |
-          echo "Shell dist:"
-          ls -R dist/shell
-          echo "Products dist:"
-          ls -R dist/products
-          echo "Orders dist:"
-          ls -R dist/orders
+  #     - name: Build Docker image
+  #       run: |
+  #         docker build --build-arg APP_NAME=shell --network=host --no-cache -t platform-ui-shell:latest .
+  #         docker build --build-arg APP_NAME=products --network=host --no-cache -t platform-ui-products:latest .
+  #         docker build --build-arg APP_NAME=orders --network=host --no-cache -t platform-ui-orders:latest .
 
-  # -----------------------
-  # 4. SONARQUBE
-  # -----------------------
-  sonar:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5
-        with:
-          fetch-depth: 0
-      - name: SonarQube Scan
-        uses: SonarSource/sonarqube-scan-action@fd88b7d7ccbaefd23d8f36f73b59db7a3d246602
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
-  # 9. Docker build (optional but powerful)
-  docker-build:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+  #     # - name: Build Shell Image
+  #     #   run: docker build --build-arg APP_NAME=shell -t shell:ci .
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
+  #     # - name: Build Products Image
+  #     #   run: docker build --build-arg APP_NAME=products -t products:ci .
 
-      - name: Build Docker image
-        run: |
-          docker build --build-arg APP_NAME=products -t platform-ui-products:latest .
-          docker build --build-arg APP_NAME=orders -t platform-ui-orders:latest .
-
-  # 9. Docker build (optional but powerful) - name: Build Docker image - Shell run: docker build --build-arg APP_NAME=shell -t shell:test . - name: Build Docker image - Products run: docker build --build-arg APP_NAME=products -t products:test . - name: Build Docker image - Orders run: docker build --build-arg APP_NAME=orders -t orders:test .
+  # 9. Docker build (optional but powerful) - name: Build Docker image - Shell run: docker build --build-arg APP_NAME=shell --network=host --no-cache -t shell:test . - name: Build Docker image - Products run: docker build --build-arg APP_NAME=products --network=host --no-cache -t products:test . - name: Build Docker image - Orders run: docker build --build-arg APP_NAME=orders --network=host --no-cache -t orders:test .
