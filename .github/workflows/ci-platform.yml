@@ -33,10 +33,10 @@ jobs:
         run: ls -R projects/
 
       # 5. Build (Host)
-      - name: Build the project
-        # run: npx ng build shell --configuration production
-        # run: cd projects/shell && npx ng build --configuration production
-        run: npm run build:shell
+      # - name: Build the project
+      #   # run: npx ng build shell --configuration production
+      #   # run: cd projects/shell && npx ng build --configuration production
+      #   run: npm run build:shell
 
       # 6. Build Products MFE
       - name: Build Products 
