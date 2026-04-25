@@ -36,7 +36,7 @@ jobs:
       - name: Build the project
         # run: npx ng build shell --configuration production
         # run: cd projects/shell && npx ng build --configuration production
-        run: npm run build:shell -- -- --configuration production
+        run: npm run build:shell
 
       # 6. Build Products MFE
       - name: Build Products 
