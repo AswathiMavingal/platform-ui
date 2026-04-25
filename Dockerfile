@@ -10,7 +10,7 @@ RUN npm ci
 # Copy source
 COPY . .
 
-# Build Angular app (adjust project name if needed)
+# Build Angular app (adjust project name if needed) 
 # RUN npm run build:products -- -- --configuration production
 # RUN npm run build:products -- -- --configuration production --base-href / --deploy-url / # working
 ARG APP_NAME=products
